@@ -47,12 +47,13 @@ import {
   SearchResponse,
   search,
 } from "./api-endpoints"
-import nodeFetch from "node-fetch"
+import type { SupportedFetch } from "./fetch-types"
+// Notice: the next line is changed during build (rollup.config.js) to use browser built-in fetch
+import isomorphicFetch from "node-fetch"
 import {
   version as PACKAGE_VERSION,
   name as PACKAGE_NAME,
 } from "../package.json"
-import { SupportedFetch } from "./fetch-types"
 
 export interface ClientOptions {
   auth?: string
@@ -94,7 +95,7 @@ export default class Client {
     this.#prefixUrl = (options?.baseUrl ?? "https://api.notion.com") + "/v1/"
     this.#timeoutMs = options?.timeoutMs ?? 60_000
     this.#notionVersion = options?.notionVersion ?? Client.defaultNotionVersion
-    this.#fetch = options?.fetch ?? nodeFetch
+    this.#fetch = options?.fetch ?? isomorphicFetch
     this.#agent = options?.agent
     this.#userAgent = `notionhq-client/${PACKAGE_VERSION}`
   }
@@ -145,6 +146,7 @@ export default class Client {
       const response = await RequestTimeoutError.rejectAfterTimeout(
         this.#fetch(url.toString(), {
           method,
+          mode: 'cors',
           headers,
           body: bodyAsJsonString,
           agent: this.#agent,

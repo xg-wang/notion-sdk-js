@@ -19,30 +19,42 @@
     "rest",
     "notion-api"
   ],
-  "main": "./build/src",
   "scripts": {
     "prepare": "npm run build",
     "prepublishOnly": "npm run lint && npm run test",
-    "build": "tsc",
+    "build": "tsc && rollup -c",
     "prettier": "prettier --write .",
     "lint": "prettier --check . && eslint . --ext .ts && cspell '**/*' ",
     "test": "ava",
     "check-links": "git ls-files | grep md$ | xargs -n 1 markdown-link-check",
     "prebuild": "npm run clean",
-    "clean": "rm -rf ./build"
+    "clean": "rimraf ./build"
   },
   "author": "",
   "license": "MIT",
   "files": [
     "build/package.json",
-    "build/src/**"
+    "build/src/*.d.ts",
+    "build/dist/**"
   ],
+  "type": "module",
+  "main": "./build/dist/bundle-node.js",
+  "types": "./build/src/index.d.ts",
+  "exports": {
+    "node": {
+      "module": "./build/src/index.js",
+      "require": "./build/dist/bundle-node.js"
+    },
+    "default": "./build/dist/bundle-browser.js"
+  },
   "dependencies": {
     "@types/node-fetch": "^2.5.10",
     "node-fetch": "^2.6.1"
   },
   "devDependencies": {
     "@ava/typescript": "^2.0.0",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-replace": "^2.4.2",
     "@typescript-eslint/eslint-plugin": "^4.22.0",
     "@typescript-eslint/parser": "^4.22.0",
     "ava": "^3.15.0",
@@ -50,6 +62,9 @@
     "eslint": "^7.24.0",
     "markdown-link-check": "^3.8.7",
     "prettier": "^2.3.0",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.52.7",
+    "rollup-plugin-sourcemaps": "^0.6.3",
     "typescript": "^4.2.4"
   }
 }

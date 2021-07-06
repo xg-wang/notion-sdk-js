@@ -1,0 +1,26 @@
+<label>
+  Access Token:
+  <input type="text" name="token" id="token" />
+</label>
+
+<button id="fetchDB" type="button">Fetch Databases</button>
+
+<br />
+
+<pre id="response"></pre>
+
+<script type="module">
+  import { Client } from "../../build/dist/bundle-browser.js"
+
+  fetchDB.onclick = async () => {
+    const auth = token.value
+    const notion = new Client({ auth })
+    let db
+    try {
+      db = await notion.databases.list()
+    } catch (e) {
+      db = e.message
+    }
+    response.innerText = JSON.stringify(db, null, 2)
+  }
+</script>

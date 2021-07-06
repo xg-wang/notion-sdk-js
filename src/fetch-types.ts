@@ -19,6 +19,7 @@ export type SupportedRequestInit = {
   headers?: NonNullable<RequestInit["headers"]> &
     NonNullable<NodeRequestInit["headers"]>
   method?: RequestInit["method"]
+  mode?: RequestInit["mode"]
   redirect?: RequestInit["redirect"]
 }
 type _assertSupportedInitIsSubtype = Assert<RequestInit, SupportedRequestInit>
