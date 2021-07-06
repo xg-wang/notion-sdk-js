@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true,
+    "target": "ES2019",
+    "module": "ES6",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "strict": false,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "lib": ["ES2019"],
+    "types": ["node", "jest"]
+  },
+  "include": ["__test__/*.ts"]
+}
